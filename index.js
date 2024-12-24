@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
@@ -17,11 +17,9 @@ app.get("/", (req, res) => {
 // foundlostadmin
 // KhZ0AEkWg1Dz2g0C
 
-
 // TODO : connect to database
 
-const uri =
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.h3mkc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.h3mkc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -35,12 +33,32 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    await client.connect();
     // Send a ping to confirm a successful connection
-    // await client.db("admin").command({ ping: 1 });
-    // console.log(
-    //   "Pinged your deployment. You successfully connected to MongoDB!"
-    // );
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+
+    // create a collection
+    const lostAndFoundItemsCollection = client
+      .db("lostAndFoundItemsCollection")
+      .collection("items");
+    // items related apis
+    // get all item to database
+    app.get("/allItems", async(req, res)=>{
+      const cursor = lostAndFoundItemsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
+    // create item data to database
+    app.post("/addItems", async (req, res) => {
+      const item = req.body;
+      const result = await lostAndFoundItemsCollection.insertOne(item);
+      res.send(item);
+    });
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
