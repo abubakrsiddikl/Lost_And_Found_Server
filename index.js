@@ -68,6 +68,21 @@ async function run() {
       res.send(result);
     });
 
+    // update a itme to database
+    app.put("/updateItems/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: req.body,
+      };
+      const result = await lostAndFoundItemsCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
     // create item data to database
     app.post("/addItems", async (req, res) => {
       const item = req.body;
