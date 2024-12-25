@@ -60,6 +60,14 @@ async function run() {
       res.send(result);
     });
 
+    // get specified user added item
+    app.get("/myItems/:email", async (req, res) => {
+      const userEmail = req.params.email;
+      const query = { email: userEmail };
+      const result = await lostAndFoundItemsCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // create item data to database
     app.post("/addItems", async (req, res) => {
       const item = req.body;
