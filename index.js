@@ -44,11 +44,24 @@ async function run() {
     const lostAndFoundItemsCollection = client
       .db("lostAndFoundItemsCollection")
       .collection("items");
+    const recoveredItemsCollection = client
+      .db("lostAndFoundItemsCollection")
+      .collection("recoveredItems");
     // items related apis
     // get all item to database
     app.get("/allItems", async (req, res) => {
       const cursor = lostAndFoundItemsCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // get latest 6 data depend on date to database
+    app.get("/latestPost", async (req, res) => {
+      const result = await lostAndFoundItemsCollection
+        .find()
+        .sort({date: -1})
+        .limit(6)
+        .toArray();
       res.send(result);
     });
 
