@@ -89,6 +89,14 @@ async function run() {
       const result = await lostAndFoundItemsCollection.insertOne(item);
       res.send(item);
     });
+
+    // delete a item to databse
+    app.delete("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await lostAndFoundItemsCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
