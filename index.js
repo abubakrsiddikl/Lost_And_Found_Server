@@ -51,10 +51,19 @@ async function run() {
     // get all item to database
     app.get("/allItems", async (req, res) => {
       const { searchParams } = req.query;
-      console.log(searchParams);
+      // console.log(searchParams);
       let option = {};
       if (searchParams) {
-        option = { title: { $regex: searchParams, $options: "i" } };
+        option = {
+          $or: [
+            {
+              title: { $regex: searchParams, $options: "i" },
+            },
+            {
+              location: { $regex: searchParams, $options: "i" },
+            },
+          ],
+        };
       }
 
       const result = await lostAndFoundItemsCollection.find(option).toArray();
