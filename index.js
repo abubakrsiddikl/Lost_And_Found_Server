@@ -50,8 +50,14 @@ async function run() {
     // items related apis
     // get all item to database
     app.get("/allItems", async (req, res) => {
-      const cursor = lostAndFoundItemsCollection.find();
-      const result = await cursor.toArray();
+      const { searchParams } = req.query;
+      console.log(searchParams);
+      let option = {};
+      if (searchParams) {
+        option = { title: { $regex: searchParams, $options: "i" } };
+      }
+
+      const result = await lostAndFoundItemsCollection.find(option).toArray();
       res.send(result);
     });
 
@@ -59,7 +65,7 @@ async function run() {
     app.get("/latestPost", async (req, res) => {
       const result = await lostAndFoundItemsCollection
         .find()
-        .sort({date: -1})
+        .sort({ date: -1 })
         .limit(6)
         .toArray();
       res.send(result);
