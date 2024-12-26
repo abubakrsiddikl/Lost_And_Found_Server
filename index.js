@@ -31,7 +31,6 @@ const veryfiToken = (req, res, next) => {
     // console.log(req.user)
     next();
   });
-
 };
 
 // root server
@@ -131,7 +130,7 @@ async function run() {
     });
 
     //get the specified item to database
-    app.get("/items/:id", async (req, res) => {
+    app.get("/items/:id", veryfiToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await lostAndFoundItemsCollection.findOne(query);
@@ -143,7 +142,7 @@ async function run() {
       const userEmail = req.params.email;
       // console.log(req.cookies?.token)
       if (req.user.email !== userEmail) {
-        return res.status(403).send({message: "Forbidden"})
+        return res.status(403).send({ message: "Forbidden" });
       }
       const query = { email: userEmail };
       const result = await lostAndFoundItemsCollection.find(query).toArray();
@@ -151,7 +150,7 @@ async function run() {
     });
 
     // update a itme to database
-    app.put("/updateItems/:id", async (req, res) => {
+    app.put("/updateItems/:id",  async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
