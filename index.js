@@ -171,6 +171,27 @@ async function run() {
       res.send(item);
     });
 
+    // post recoverd item collection
+    app.post("/allRecovered", async (req, res) => {
+      const item = req.body;
+      const result = await recoveredItemsCollection.insertOne(item);
+      res.send(result);
+    });
+
+    // update status
+    app.patch("/updateStatus/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: data.status,
+        },
+      };
+      const result = await lostAndFoundItemsCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
     // delete a item to databse
     app.delete("/item/:id", async (req, res) => {
       const id = req.params.id;
