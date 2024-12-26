@@ -150,7 +150,7 @@ async function run() {
     });
 
     // update a itme to database
-    app.put("/updateItems/:id",  async (req, res) => {
+    app.put("/updateItems/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
