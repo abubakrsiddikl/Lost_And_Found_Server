@@ -86,7 +86,7 @@ async function run() {
         .send({ success: true });
     });
 
-    // after logout to delet token to cookie
+    // after logout to delete token to cookie
     app.post("/logout", async (req, res) => {
       res
         .clearCookie("token", {
