@@ -149,6 +149,15 @@ async function run() {
       res.send(result);
     });
 
+    // get all revored items to database
+    app.get("/allRecovered/:email", veryfiToken, async (req, res) => {
+      const userEmail = req.params.email;
+      // console.log(userEmail);
+      const query = { email: userEmail };
+      const result = await recoveredItemsCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // update a itme to database
     app.put("/updateItems/:id", async (req, res) => {
       const id = req.params.id;
@@ -188,7 +197,10 @@ async function run() {
           status: data.status,
         },
       };
-      const result = await lostAndFoundItemsCollection.updateOne(filter, updateDoc);
+      const result = await lostAndFoundItemsCollection.updateOne(
+        filter,
+        updateDoc
+      );
       res.send(result);
     });
 
