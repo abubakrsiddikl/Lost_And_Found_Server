@@ -171,7 +171,7 @@ async function run() {
           timestamp: new Date(),
         };
 
-        // Save message to MongoDB
+        // Save message in MongoDB
         await messagesCollection.insertOne(chatMessage);
 
         // Emit message to recipient's room
