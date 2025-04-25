@@ -185,7 +185,7 @@ async function run() {
       });
     });
 
-    // Chat-related API: Get message history between two users
+    // Chat-related API: Gets message history between two users
     app.get("/messages/:recipientEmail", verifyToken, async (req, res) => {
       const senderEmail = req.user.email;
       const recipientEmail = req.params.recipientEmail;
