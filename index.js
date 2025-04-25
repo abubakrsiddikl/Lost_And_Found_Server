@@ -140,7 +140,7 @@ async function run() {
     });
 
     // ! socket io connection with jwt verification
-    i.use((socket, next) => {
+    io.use((socket, next) => {
       const token = socket.handshake.auth.token;
       if (!token) {
         return next(new Error("Authentication error: Invalid token"));
